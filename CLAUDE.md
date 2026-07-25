@@ -16,28 +16,28 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - ユーザーがWBS番号なしで作業を依頼した場合、該当するWBS項目を確認するか、なければWBSへの追加を提案する
 - WBS改訂時はバージョン番号を上げ、変更履歴に追記する
 
-## リポジトリ構成
+## ドキュメントの書き分け
 
-- `docs/wbs.md` — WBS（作業の唯一のマスター）。**進捗ステータスの正はこのファイルのみ**
-- `docs/agenda.md` — Phase全体のアジェンダ（何をやるかの見取り図。進捗は持たない）
-- `docs/workflow.md` — プロジェクトの回し方（デイリー/週次/発信フローの図解）
-- `docs/character.md` — キャラ設定（丸の内ヒナ🐣）・口調・投稿台本・発信戦略
-- `docs/requirements.md` — MVP要件定義（Confluenceと同期）※WBS 0.1で作成予定
-- `content/drafts/` — 週次生成するX投稿案・記事の書き溜め
-- `content/articles/` — Phase節目の公開用記事
-- `content/assets/hina/` — キャラのアイコン・表情差分画像
-- `.github/PULL_REQUEST_TEMPLATE.md` — PRテンプレート ※WBS 1.2.3で作成予定
+**ファイル一覧は README.md に置く。ここには重複させず、「何をどこに書くか」のルールだけを持つ。**
+
+- **進捗ステータスは `docs/wbs.md` にのみ書く**。他のファイルに進捗を持たせない（`docs/agenda.md` は見取り図であって進捗を持たない）
+- **要件は `docs/requirements.md` が正**。Confluenceは同期先であって原本ではない
+- **記事の原本は `content/articles/`**。Zennは現時点の公開先でしかなく、後で別サイトへ移せる形を保つ
+- **発信物を作る前に必ず `docs/character.md` を読む**（口調・投稿の型・運用方針）
+- **マシン固有のセットアップ手順は `docs/setup.md`**。gitで共有できない設定（MCP接続など）はここに書く
+- 新しいドキュメントを追加したら、**README.md の構成表にも追記する**（一覧の正はREADME）
 
 ## 開発ルール
 
 ### ブランチ運用（GitHub Flow）
 - `main` は常にビルドが通る状態を保つ。直接pushしない
-- ブランチ名: `feature/PROJ-XXX-short-description`（Jiraチケット番号を含める）
+- ブランチ名: `feature/KAN-XXX-short-description`（Jiraチケット番号を含める）
 - 1チケット = 1ブランチ = 1PR
 
 ### コミット規約（Conventional Commits）
 - `feat:` / `fix:` / `chore:` / `docs:` / `refactor:` / `test:` プレフィックス必須
-- 末尾にJiraチケット番号: `feat: アプリ選択ピッカーを追加 (PROJ-123)`
+- 末尾にJiraチケット番号: `feat: アプリ選択ピッカーを追加 (KAN-123)`
+  - プロジェクトキーは `KAN`（Jiraのカンバンテンプレートの既定値。プロジェクト名は「hina」）
 
 ### PRルール
 - PRテンプレートの「詰まった点」「ブログ化ネタ度⭐1-3」欄を必ず埋める

@@ -33,7 +33,8 @@
 | `docs/setup.md` | 別マシンで環境を作る手順 |
 | `content/articles/` | 連載記事の原本（markdown） |
 | `content/drafts/` | 投稿案・記事の書き溜め |
-| `CLAUDE.md` | Claude Code への前提共有 |
+| `content/assets/hina/` | キャラのアイコン・表情差分・ヘッダー画像 |
+| `CLAUDE.md` | Claude Code への前提共有（作業ルール） |
 
 記事の**原本はこのリポジトリ**にあります。Zenn は現時点の公開先です。
 

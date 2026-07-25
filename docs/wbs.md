@@ -28,7 +28,7 @@
   - 0.3.1 ✅ DEV/CONTENT/CHARAのEpic作成 → KAN-1(DEV)/KAN-2(CONTENT)/KAN-3(CHARA)
   - 0.3.2 ✅ ワークフロー確認（To Do → In Progress → In Review → Done。KANに標準装備済み）
   - 0.3.3 🔄 Phase 0-1をチケット化（KAN-4〜18）。完了分はDone、着手中はIn Progressへ反映済み。Phase 2以降は運用が回り始めてから追加
-  - 課題: CLAUDE.mdのチケット番号例が `PROJ-XXX` だが実際は `KAN-XXX`。CLAUDE.md側を実態に合わせる必要あり
+  - ✅ CLAUDE.mdのチケット番号例を実態に修正（`PROJ-XXX` → `KAN-XXX`）。プロジェクトキー `KAN` はJiraのカンバンテンプレート既定値だが、リネームせず維持する判断（2026-07-26）
 - 0.4 [CHARA] キャラ設定（3h）✅
   - 0.4.1 ✅ 名前・口調・性格の決定 →「丸の内ヒナ」/ 清楚系OL・詰まると素が出る / AIくん呼び
   - 0.4.2 ✅ ビジュアル方向性の決定 → リアル寄りAI生成（実在人物参照なし・AI生成明記）
@@ -73,10 +73,16 @@
   - 無料署名の制約: 署名が**7日で失効**するため週1でXcodeから入れ直しが必要
   - ⚠️ 未確認: FamilyControlsは制限付きエンタイトルメントのため、**2.1以降で有料メンバーシップが必要になる可能性が高い**（Apple公式ドキュメントからは確証取れず）
   - 確認方法: Xcodeで Family Controls capability を追加しようとした時点で可否が判明する（1.4.2）。**課金前に答えが出るので、そこで判断する**
-- 1.2 [DEV] GitHubリポジトリ作成・初期設定（2h）
-  - 1.2.1 リポジトリ作成、main保護設定
-  - 1.2.2 .gitignore（Xcode用）、README作成
+- 1.2 [DEV] GitHubリポジトリ作成・初期設定（2h）🔄
+  - リポジトリ: https://github.com/hina-tsukuru/hina-blocks （Public・2026-07-25）
+  - 1.2.1 🔄 リポジトリ作成 ✅ / **main保護設定は未実施**
+  - 1.2.2 ✅ .gitignore（Xcode・fastlane・.DS_Store対応）、README作成
   - 1.2.3 PRテンプレート作成（詰まった点/ネタ度欄つき）
+  - ⚠️ 詰まった点（記事ネタ）: CLAUDE.mdに実名個人サイトのドメインが書かれており、
+    公開すると「ヒナ名義リポジトリ → 実名サイト」の導線ができる状態だった。
+    push前のgrepで発見 → 該当箇所を一般化 → **さらに履歴にも残っていたため未push状態を利用して履歴を再構築**。
+    再発防止: push前に実名・個人サイト・メールの混入をgrepで確認する
+  - コミット名義: `hina-tsukuru` + GitHub非公開メール（`git config` はリポジトリ限定で設定）
 - 1.3 [DEV] CLAUDE.md作成（1h）
 - 1.4 [DEV] Xcodeプロジェクト作成・実機ビルド確認（2h）
   - 1.4.1 プロジェクト作成（SwiftUI）
