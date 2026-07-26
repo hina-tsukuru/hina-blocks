@@ -94,10 +94,25 @@
   - コミット名義: `hina-tsukuru` + GitHub非公開メール
 - 1.3 [DEV] CLAUDE.md作成（1h）→ KAN-13
   - 実体は既に存在。内容の最終整備が残っている
-- 1.4 [DEV] Xcodeプロジェクト作成・実機ビルド確認（2h）→ KAN-14 ← **次にやる**
-  - 1.4.1 プロジェクト作成（SwiftUI）
+- 1.4 [DEV] Xcodeプロジェクト作成・実機ビルド確認（2h）→ KAN-14
+  - 1.4.1 プロジェクト作成（SwiftUI / XCTest / Storage=None）
+    - Bundle Identifier: `io.github.hina-tsukuru.HinaBlocks`
+      - 組織IDは全アプリで使い回す部分。GitHubアカウントを名前空間に使う（ドメイン購入不要・匿名を維持できる）
+      - 実名でアプリを作る場合は**別の名前空間**を使う。同じ名前空間に混ぜると匿名運用が崩れる
+      - App Store公開後は変更不可のため、名義はプロジェクト作成時に決める
+    - 署名は無料Apple ID（Personal Team）。`DEVELOPMENT_TEAM` は不透明IDなので実名は含まれない
   - 1.4.2 Family Controls capability追加 ← ここで 1.1 の課金要否が判明する
   - 1.4.3 手元のiPhoneで空アプリが起動するまで
+  - 詰まった点①（⭐3）: **Xcodeが生成した全Swiftファイルのヘッダーに実名が入っていた**
+    （`// Created by <実名> on ...`）。macOSアカウントのフルネームが自動で埋め込まれる仕様。
+    公開リポジトリなので、そのままpushすると1.2と同じ実名漏えいになるところだった
+    - 対処: 5ファイルのヘッダーを置換 + `IDETemplateMacros.plist` を `xcshareddata` に配置して、
+      **今後生成されるファイルにも実名が入らないよう固定**（`xcshareddata` はgit管理されるので2台目Macでも有効）
+    - 再発防止: プロジェクト生成直後、コミット前に必ず実名をgrepする
+  - 詰まった点②: `git status` の `AM` は「ステージ済みの内容と現在のファイルが違う」の意味。
+    実名を消す**前**の版がステージされていたため、そのままcommitすると実名が入る状態だった
+    - 再発防止: **grepは作業ファイルではなく `git diff --cached`（ステージ内容）に対して行う**。
+      コミットされるのはステージされた内容であって、手元のファイルではない
 - 1.5 [DEV] SwiftLint導入（1h）→ KAN-15
 - 1.6 [DEV] 2台目Macのセットアップ・同期確認（1.5h）→ KAN-16
   - 手順は `docs/setup.md` に整備済み。0.7.2（2台目のMCP設定）もここに含む
