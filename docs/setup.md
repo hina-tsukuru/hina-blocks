@@ -67,7 +67,21 @@ claude mcp list
 
 ---
 
-## 4. Xcode（Phase 1.4 以降）
+## 4. GitHubの設定を復元する（リポジトリを作り直した場合のみ）
+
+通常は不要。**リポジトリを作り直したときだけ**実行する。
+
+```bash
+./scripts/setup-branch-protection.sh
+```
+
+`main` ブランチ保護（PR必須・管理者にも適用・force push禁止）を適用する。
+GitHubの設定はGUIで変更してもgitに履歴が残らないため、
+**再現できる形でスクリプトに残している**（設定の意図はスクリプト内のコメント参照）。
+
+---
+
+## 5. Xcode（Phase 1.4 以降）
 
 - Xcode をインストール（App Store。**ダウンロードに時間がかかる／容量が大きい**）
 - 署名は**無料Apple IDで進行中**（WBS 1.1 は保留）
