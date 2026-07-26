@@ -20,7 +20,10 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 
 **ファイル一覧は README.md に置く。ここには重複させず、「何をどこに書くか」のルールだけを持つ。**
 
-- **進捗ステータスは `docs/wbs.md` にのみ書く**。他のファイルに進捗を持たせない（`docs/agenda.md` は見取り図であって進捗を持たない）
+- **進捗の正は Jira（`KAN`）**。markdownファイルに進捗を書かない（`wbs.md` も `agenda.md` も進捗を持たない）
+  - 「今どこまで進んだか」を聞かれたら、推測せず **Jiraを見にいく**
+  - `docs/wbs.md` が持つのは**計画**（作業の分解・見積もり）と**判断の記録**（なぜそうしたか・詰まった点・再発防止）
+  - 粒度: `agenda.md`（全体像）→ `wbs.md`（作業の分解）→ Jira（今日の状態）
 - **要件は `docs/requirements.md` が正**。Confluenceは同期先であって原本ではない
 - **記事の原本は `content/articles/`**。Zennは現時点の公開先でしかなく、後で別サイトへ移せる形を保つ
 - **発信物を作る前に必ず `docs/character.md` を読む**（口調・投稿の型・運用方針）
@@ -91,6 +94,7 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - JiraとConfluenceはMCP（Atlassian Remote MCP Server）経由でClaude Codeから直接操作する
 - セットアップは両方のMacで必要（WBS 0.7）。未設定の状態でJira操作を求められたら、先にセットアップを案内する
 - チケット運用: 着手時にIn Progress、PRマージ時にDoneへ動かす。フィードバックや新タスクはWBS追記と同時にJiraにも起票する
+- **コミットメッセージにチケット番号を書く前に、必ずJiraで起票して番号を確定させる**。番号を予想で書かない（KAN-20で実際に食い違いが起きた）
 
 ## Claude Codeへの振る舞い指示
 
