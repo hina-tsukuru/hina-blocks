@@ -53,6 +53,13 @@
     - 正しいコマンド: `claude mcp add -s user --transport sse atlassian https://mcp.atlassian.com/v1/sse`（**-s user 必須**。全プロジェクト・両Mac共通で使える）
     - 認証は `/mcp` → Authenticate → ブラウザで許可 → ✔ Connected
   - 0.7.2 2台目MacでMCPセットアップ・接続確認（未。上の -s user 付きコマンドで実施）
+- 1.9 [DEV] ブランチ保護設定のスクリプト化（0.5h）✅（2026-07-26・KAN-20）
+  - `scripts/setup-branch-protection.sh`。GitHubの設定はGUIで変えてもgitに履歴が残らないため、
+    再現可能な形でコード化した（Terraform等のIaCの簡易版という位置づけ）
+  - 設定の「なぜこの値か」をスクリプト内コメントに残すのが主目的。
+    リポジトリ作り直し時の復元手段も兼ねる → `docs/setup.md` から参照
+  - 詰まった点: jqで日本語のキーを使う場合はクォートが必要（`{PR必須: ...}` は構文エラー、`{"PR必須": ...}` が正）
+  - Terraform本体は個人開発の規模では過剰と判断し不採用
 - 0.9 [CHARA] 各サービスのハンドル統一を検討（0.5h）✅ 方針決定（2026-07-25）
   - 現状: X=@hina_tsukuru / Zenn=@hinac / GitHub=これから作成
   - **決定: GitHubはヒナ名義で新規アカウントを取得する**（実名アカウントは使わない）
