@@ -94,6 +94,10 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - JiraとConfluenceはMCP（Atlassian Remote MCP Server）経由でClaude Codeから直接操作する
 - セットアップは両方のMacで必要（WBS 0.7）。未設定の状態でJira操作を求められたら、先にセットアップを案内する
 - チケット運用: 着手時にIn Progress、PRマージ時にDoneへ動かす。フィードバックや新タスクはWBS追記と同時にJiraにも起票する
+- **チケットを動かすのは「作業した方」**（2026-07-26決定）
+  - Claudeが実装・ドキュメント作業をした → **Claudeが動かす**
+  - ユーザーがGUI操作・記事公開・アカウント設定をした → **ユーザーが動かす**
+  - 理由: Jiraが進捗の正になったため、動かし忘れると全体が信用できなくなる。「やった人がその場で動かす」が最もズレない
 - **コミットメッセージにチケット番号を書く前に、必ずJiraで起票して番号を確定させる**。番号を予想で書かない（KAN-20で実際に食い違いが起きた）
 
 ## Claude Codeへの振る舞い指示
