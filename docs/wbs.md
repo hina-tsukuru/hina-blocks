@@ -101,7 +101,19 @@
       - 実名でアプリを作る場合は**別の名前空間**を使う。同じ名前空間に混ぜると匿名運用が崩れる
       - App Store公開後は変更不可のため、名義はプロジェクト作成時に決める
     - 署名は無料Apple ID（Personal Team）。`DEVELOPMENT_TEAM` は不透明IDなので実名は含まれない
-  - 1.4.2 Family Controls capability追加 ← ここで 1.1 の課金要否が判明する
+  - 1.4.2 Family Controls capability追加 → **無料アカウントでは追加できないことを確認**（2026-07-28）
+    - Capability一覧はアルファベット順だが、`Fall Detection Notifications` の次が `Game Center` で、
+      **`Family Controls` が存在しない**。検索で出ないのではなく選択肢自体が提供されていない
+    - → **Phase 2 に進むには Apple Developer Program（年12,800円）が必須**。1.1 の保留を解除する判断が必要
+    - 「払う前に要否を確定させる」という 1.1 の作戦は機能した（課金せずに答えが出た）
+    - 前提として **対応プラットフォームを iOS のみに絞る必要があった**（下記）
+  - 対応プラットフォームの絞り込み: Xcode 26 の新規プロジェクトは既定で
+    `iphoneos iphonesimulator macosx xros xrsimulator` と macOS / visionOS も対象になる。
+    Signing & Capabilities はプラットフォームごとにセクションが分かれるため、
+    **macOSのセクションを見ている間は iOS 専用の capability が一覧に出ない**
+    - General → Supported Destinations から Mac / Apple Vision を削除して iPhone のみに
+    - テストターゲット側にも古い設定が残るため、全ターゲットで揃えた
+    - Screen Time API は iOS 専用なので、絞り込みは要件的にも正しい
   - 1.4.3 手元のiPhoneで空アプリが起動するまで
   - 詰まった点①（⭐3）: **Xcodeが生成した全Swiftファイルのヘッダーに実名が入っていた**
     （`// Created by <実名> on ...`）。macOSアカウントのフルネームが自動で埋め込まれる仕様。
