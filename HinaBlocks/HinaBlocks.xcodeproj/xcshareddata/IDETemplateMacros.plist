@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  新規ファイル生成時のヘッダーテンプレート。
+
+	  ■ なぜ固定しているか
+	    Xcodeは既定で macOS アカウントのフルネーム（___FULLUSERNAME___）を
+	    「Created by」に埋め込む。このリポジトリは公開されており、
+	    キャラクター名義（hina-tsukuru）で運用しているため、
+	    実名がソースコードに混入すると匿名運用が崩れる。
+
+	  ■ 効果範囲
+	    このファイルは xcshareddata に置かれており git 管理されるため、
+	    2台目のMacでも同じヘッダーが使われる。
+	    （UserData 側に置くとそのMacだけの設定になり共有されない）
+	-->
+	<key>FILEHEADER</key>
+	<string>
+//  ___FILENAME___
+//  ___PROJECTNAME___
+//
+//  Created by hina-tsukuru on ___DATE___.
+//</string>
+</dict>
+</plist>

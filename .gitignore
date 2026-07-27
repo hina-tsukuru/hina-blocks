@@ -1,6 +1,10 @@
 # macOS
 .DS_Store
 
+# コミット前チェック用の語リスト（実名・旧ハンドル等）
+# 「隠したい語のリスト」自体が答えになるため、絶対にコミットしない
+.private-patterns
+
 # Xcode
 DerivedData/
 build/
