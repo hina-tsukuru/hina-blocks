@@ -9,7 +9,7 @@
 
 ```bash
 cd ~/dev
-git clone <リポジトリURL> hina-blocks
+git clone https://github.com/hina-tsukuru/hina-blocks.git
 cd hina-blocks
 ```
 
@@ -32,7 +32,28 @@ git config user.email "<決めたメール>"
 
 ---
 
-## 3. Atlassian MCP を接続
+## 3. Claude Code をインストール
+
+既に入っていれば飛ばしてよい（`claude --version` で確認）。
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+> **なぜ npm / brew を使わないか**: 2台目のMacは node v15 / Homebrew 3.0.10 と古く、
+> どちらも使えなかった。公式インストーラは既存の環境に依存しないため確実。
+
+インストール先は `~/.local/bin` だが、**PATHに入っていないことがある**。
+`claude: command not found` になったら `.zshrc` に追記する:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+---
+
+## 4. Atlassian MCP を接続
 
 **この設定はマシンごとに必要**（`~/.claude.json` に保存されるため、gitでは共有されない）。
 
@@ -67,7 +88,7 @@ claude mcp list
 
 ---
 
-## 4. GitHubの設定を復元する（リポジトリを作り直した場合のみ）
+## 5. GitHubの設定を復元する（リポジトリを作り直した場合のみ）
 
 通常は不要。**リポジトリを作り直したときだけ**実行する。
 
@@ -81,7 +102,7 @@ GitHubの設定はGUIで変更してもgitに履歴が残らないため、
 
 ---
 
-## 5. Xcode
+## 6. Xcode
 
 Xcode を App Store からインストール（**容量が大きくダウンロードに1時間近くかかる**）。
 
@@ -93,13 +114,13 @@ xcode-select -p
 
 `/Applications/Xcode.app/Contents/Developer` のようなパスが出ればOK。
 
-### 5.1 Apple ID を登録する
+### 6.1 Apple ID を登録する
 
 **Xcode → Settings → Accounts** で Apple ID を追加する。**無料のApple IDでよい**（有料のApple Developer Program は WBS 1.1 で保留中）。
 
 追加すると Team に「(名前) (Personal Team)」が選べるようになる。これがないと実機で動かせない。
 
-### 5.2 ビルド時に出るパスワード要求について
+### 6.2 ビルド時に出るパスワード要求について
 
 初回ビルド時に **「codesign wants to access key ... in your keychain」** というダイアログが出る。
 
@@ -107,14 +128,14 @@ xcode-select -p
 
 **「Always Allow」** を選ぶ（「Allow」だとビルドのたびに聞かれる）。
 
-### 5.3 無料署名の制約
+### 6.3 無料署名の制約
 
 - 署名は**7日で失効**する → 週1でXcodeから実機に入れ直す
 - Family Controls のような制限付きエンタイトルメントは使えない可能性がある
   （WBS 1.4.2 の時点で判明する）
 - Xcode の "Automatically manage signing" は将来 fastlane match に移行予定（WBS 3.3）
 
-### 5.4 ⚠️ 新規ファイルに実名が入らないことの確認
+### 6.4 ⚠️ 新規ファイルに実名が入らないことの確認
 
 Xcode は既定で **macOSアカウントのフルネーム**を、生成する全ファイルのヘッダーに埋め込む。
 
@@ -135,7 +156,7 @@ grep -rn "Created by" HinaBlocks --include='*.swift' | grep -v "hina-tsukuru"
 
 ---
 
-## 6. コミット前の必須チェック
+## 7. コミット前の必須チェック
 
 公開リポジトリのため、**実名・個人サイト・メールアドレスの混入**を毎回確認する。
 
@@ -186,8 +207,13 @@ git diff --cached | grep -niFf .private-patterns
 
 ```bash
 git add -A
+git diff --cached | grep -niFf .private-patterns   # ← 何も出ないことを確認してから
 git commit -m "docs: 作業内容 (KAN-xx)"
 git push
 ```
+
+> ⚠️ `git add -A` は**無視設定から漏れているファイルも巻き込む**。
+> 7章のチェックを飛ばすと、`.private-patterns` 自体がステージされる事故が起きうる。
+> **commit の前に必ず1行挟むこと。**
 
 Claude Code のセッションはマシン間で引き継がれない。**作業の文脈はコミットメッセージとPR本文に残す。**
