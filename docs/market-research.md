@@ -69,6 +69,42 @@ Apple自身のスクリーンタイムはOSに統合されているためこの�
 
 ---
 
+## 日本市場（追加調査 2026-07-28）
+
+> ⚠️ 上記の調査は英語圏中心だった（検索が米国ベースのため）。
+> 日本市場は別物の可能性があったので追加で確認した。
+
+### 日本語対応アプリは複数ある
+
+| アプリ | 特徴 |
+|---|---|
+| **AppBlock** | 日本語対応。**1,500万ユーザー**を謳う。アプリ・サイト両方ブロック |
+| **Jomo** | 日本語対応。Instagram / TikTok / YouTube / LINE など個別対応を明記 |
+| **Blockin** | 日本語。勉強・集中用途に寄せた訴求 |
+| **Zentime** | 日本語。¥600〜¥15,000 のアプリ内購入 |
+| スマホ制限アプリ | 日本語。保護者による使用制限用途 |
+
+**「日本語だとZentimeくらい」ではない。** 少なくとも5本以上が日本語で流通しており、
+特に **AppBlock は1,500万ユーザー規模**で、規模的には日本のニッチプレイヤーより大きい。
+
+### 無料のScreenZenは日本でも入手できる
+
+**ScreenZen は日本のApp Storeでも配信されている**（`apps.apple.com/jp/app/...id1541027222`）。
+アプリ名・UIは英語のままだが、**日本語の個人ブログで「マジで最強すぎる」と推されている**状態。
+
+つまり **「無料の強力な競合」は日本市場にも存在する。**
+言語の壁がある分だけ発見されにくいが、口コミで広がりつつある。
+
+### 日本語圏でよく読まれているのは「抜け道」の話
+
+検索結果の上位に「**iPhoneのスクリーンタイム抜け道 完全ガイド｜制限解除ワザとアプリ別対策**」
+のような記事が入ってくる。
+
+これは需要の裏返しで、**「制限をかけたい側」と「破りたい側」が同じ人**という構図を示している。
+前述の「Ignore Limit問題」と同じ話が、日本語圏でも中心的な関心になっている。
+
+---
+
 ## Screen Time API の設計上の制約（実装に効く）
 
 - **不透明トークン設計**: `FamilyActivitySelection` で選ばれたアプリの情報は暗号化トークンで隠され、アプリ側は「どのアプリが選ばれたか」を一切知れない。プライバシー優先の設計
@@ -121,3 +157,12 @@ Apple自身のスクリーンタイムはOSに統合されているためこの�
 - [A Developer's Guide to Apple's Screen Time APIs | Medium](https://medium.com/@juliusbrussee/a-developers-guide-to-apple-s-screen-time-apis-familycontrols-managedsettings-deviceactivity-e660147367d7)
 - [Jomo - スクリーンタイム、アプリのブロックアプリ - App Store](https://apps.apple.com/jp/app/jomo-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0-%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF/id1609960918)
 - [アプリ制限 Zentime - App Store](https://apps.apple.com/jp/app/id6748847369)
+
+### 日本市場（追加調査）
+
+- [AppBlock アプリ・サイトをブロックしてスマホ依存克服アプリ - App Store](https://apps.apple.com/jp/app/appblock-%E3%82%A2%E3%83%97%E3%83%AA-%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%81%97%E3%81%A6%E3%82%B9%E3%83%9E%E3%83%9B%E4%BE%9D%E5%AD%98%E5%85%8B%E6%9C%8D/id1515753232)
+- [スマホ依存対策Blockin - App Store](https://apps.apple.com/jp/app/%E3%82%B9%E3%83%9E%E3%83%9B%E4%BE%9D%E5%AD%98%E5%AF%BE%E7%AD%96blockin%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E5%88%B6%E9%99%90-%E5%8B%89%E5%BC%B7-%E9%9B%86%E4%B8%AD/id1659162950)
+- [ScreenZen - Screen Time Control（日本のApp Store）](https://apps.apple.com/jp/app/screenzen-screen-time-control/id1541027222)
+- [マジで最強すぎるスマホ制限アプリ「ScreenZen」を広めたい！ - note](https://note.com/ik_zz/n/ne4ee02f912f8)
+- [スマホ制限アプリおすすめ7選 - Amebaチョイス](https://choice.ameba.jp/app-limiter/)
+- [iPhoneのスクリーンタイム抜け道 完全ガイド - デジマーケジャーナル](https://mobinc.jp/media/2026/01/02/iphone%E3%81%AE%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E6%8A%9C%E3%81%91%E9%81%93%E6%9C%80%E6%96%B0%E5%AE%8C%E5%85%A8%E3%82%AC%E3%82%A4%E3%83%89%EF%BD%9C%E5%88%B6-3/)
