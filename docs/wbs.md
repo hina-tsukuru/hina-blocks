@@ -128,7 +128,24 @@
     - General → Supported Destinations から Mac / Apple Vision を削除して iPhone のみに
     - テストターゲット側にも古い設定が残るため、全ターゲットで揃えた
     - Screen Time API は iOS 専用なので、絞り込みは要件的にも正しい
-  - 1.4.3 手元のiPhoneで空アプリが起動するまで
+  - 1.4.3 手元のiPhoneで空アプリが起動するまで → **達成**（2026-07-29 / iPhone 16 / 無料署名）
+    - 実機は `xcrun devicectl` で操作できる（Xcode GUIを使わずCLIで完結した）
+      - 一覧: `xcrun devicectl list devices`
+      - ビルド: `xcodebuild -destination 'id=<デバイスID>' -allowProvisioningUpdates -allowProvisioningDeviceRegistration build`
+      - 導入: `xcrun devicectl device install app --device <ID> <path/to/.app>`
+      - 起動: `xcrun devicectl device process launch --device <ID> <bundle-id>`
+    - **関門が4段階あった**（いずれもセキュリティのための摩擦。どれか1つ欠けても動かない）
+      1. **ペアリング** — iPhone側の「このコンピュータを信頼」だけでは不十分。
+         `unpaired` エラーが出続ける
+      2. **デベロッパモード** — iOS 16以降必須。設定 → プライバシーとセキュリティ →
+         デベロッパモード。**iPhoneの再起動が必要**。しかも一度Xcodeから接続を試みるまで
+         項目自体が表示されない
+      3. **デバイスがプロビジョニングプロファイル未登録** — 初回は必ず弾かれる。
+         `-allowProvisioningDeviceRegistration` を付けると自動登録される
+      4. **プロファイルが未信頼** — インストールは成功するが起動が拒否される。
+         iPhone: 設定 → 一般 → VPNとデバイス管理 → Apple ID → 信頼
+    - 記事ネタ: 4段階すべてが「危険な操作の前に一手間を挟む」設計であり、
+      市場調査で学んだ「摩擦の設計」と同じ構造をしている
   - 詰まった点①（⭐3）: **Xcodeが生成した全Swiftファイルのヘッダーに実名が入っていた**
     （`// Created by <実名> on ...`）。macOSアカウントのフルネームが自動で埋め込まれる仕様。
     公開リポジトリなので、そのままpushすると1.2と同じ実名漏えいになるところだった
