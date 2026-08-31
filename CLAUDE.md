@@ -36,6 +36,11 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - `main` は常にビルドが通る状態を保つ。直接pushしない
 - ブランチ名: `feature/KAN-XXX-short-description`（Jiraチケット番号を含める）
 - 1チケット = 1ブランチ = 1PR
+- **未マージのPRを2本以上同時に作らない**（1本マージしてから次に着手する）
+  - 理由: 複数のPRが同じファイル（特に `docs/wbs.md`）を触ってコンフリクトする。
+    実際に2本同時進行でコンフリクト寸前になり、PR本文と差分が食い違うミスも起きた
+- ブランチ運用のルールは `.claude/git-policy.json` にも定義してある（`git-flow` スキルが読む）。
+  **CLAUDE.mdを変更したら、そちらとの整合も確認する**
 
 ### コミット規約（Conventional Commits）
 - `feat:` / `fix:` / `chore:` / `docs:` / `refactor:` / `test:` プレフィックス必須
