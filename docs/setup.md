@@ -8,12 +8,16 @@
 ## 1. リポジトリを取得
 
 ```bash
-cd ~/dev
+mkdir -p ~/AI && cd ~/AI
 git clone https://github.com/hina-tsukuru/hina-blocks.git
 cd hina-blocks
 ```
 
 これで `docs/` `content/` `CLAUDE.md` が揃う。**作業の文脈は全部ここにある**（WBS・要件・キャラ設定・記事）。
+
+> 置き場所は `~/AI/hina-blocks` に統一する。
+> 以前は `~/dev` を使っていたが移動したため、**手順書の1行目で止まる状態になっていた**。
+> `mkdir -p` を付けてあるので、フォルダが無いマシンでもそのまま実行できる。
 
 ---
 
