@@ -21,7 +21,8 @@
 | アプリ | 価格 | モデル |
 |---|---|---|
 | **iOS標準スクリーンタイム** | **無料** | OS標準機能 |
-| **ScreenZen** | **完全無料** | 寄付で運営。サブスク・課金・プレミアム階層すべて無し |
+| **ScreenZen** | **完全無料** | 寄付で運営。サブスク・課金・プレミアム階層すべて無し。ただし規模は月間アクティブ50万人 |
+| **AppBlock**（1,500万ユーザー） | 無料枠 + **$29.99/年** · $89.99買い切り | フリーミアム。7日無料トライアル後に自動更新 |
 | Forest | $3.99 | 買い切り |
 | Habit Doom | 無料枠 + $2.99/月 | フリーミアム |
 | ScreenBuddy | $3.99/月 · $39.99/年 · $99.99買い切り | サブスク＋買い切り |
@@ -29,6 +30,21 @@
 | Zentime（日本語対応） | ¥600 / ¥980 / ¥5,000 / ¥15,000 | アプリ内購入 |
 
 **幅がとても広い。** 無料から年1万円超まで、同じジャンルで10倍以上の開きがある。
+
+### 訂正: 「無料が当たり前のカテゴリ」ではない（2026-09-09）
+
+初版では **ScreenZen が完全無料であることを根拠に「このカテゴリで収益化は現実的でない」と結論づけていたが、これは誤り。**
+
+- ScreenZen は「完全無料・寄付運営」という**業界でも外れ値**の存在。しかも規模は50万MAU
+- 規模がある **AppBlock（1,500万ユーザー）はしっかり課金している**。
+  無料枠は**ブロック時間4時間まで・プロファイル2個まで・バックアップ不可・広告あり**という明確な制限つき
+- Opal $99.99/年、ScreenBuddy $39.99/年 も成立している
+
+**このカテゴリはむしろ普通に収益化できている。**
+
+- 誤りの構造: **例外1件（ScreenZen）からカテゴリ全体を一般化した**
+- 再発防止: 「無料の競合がいる」と書くときは、**その無料アプリの規模**と、
+  **同カテゴリ上位が課金しているか**を必ずセットで確認する。1件で一般化しない
 
 ---
 
@@ -164,12 +180,27 @@ iOS標準のスクリーンタイムは、制限時間に達しても **「制�
 
 ## このプロジェクトへの示唆
 
-### 1. 収益化は期待しない方がよい
+### 1. 収益化は可能。ただし「基本機能」では取れない（2026-09-09 全面改訂）
 
-**完全無料で高機能な競合（ScreenZen）がいる時点で、有料で売るのは相当に厳しい。**
-市場は成熟していて、無料〜年1万円まで選択肢が揃っている。後発が価格で戦う余地は薄い。
+カテゴリとしては収益化できている（AppBlock $29.99/年、Opal $99.99/年）。
+**「このカテゴリでは稼げない」は誤りだった。**
 
-### 2. だからこそ12,800円の判断は単純になる
+ただし、**何にお金が払われているか**を見ると、後発が取れる場所は限られる。
+
+- **基本のブロック機能では取れない。** ScreenZen が 4.8★ で完全無料配布しており、価格の錨がゼロにある
+- 課金が成立しているのは、その**外側**:
+  複数プロファイル / スケジュール / 統計 / バックアップ・同期 / Android・デスクトップ対応
+- **これは現MVPが意図的に除外している領域とほぼ一致する**（[requirements.md](requirements.md)）
+
+さらに順序の問題がある。
+
+> **AppBlock は1,500万ユーザーがいるから月額が成立している。** 収益は配布の後に来る。
+
+したがって「収益化するか」は**いま決める問題ではなく、ユーザー基盤ができてから決める問題**。
+いま収益を目的に置くと、MVPの設計が「課金できる機能」に引っぱられて歪む。
+現時点の方針は [growth.md](growth.md) を参照。
+
+### 2. 12,800円は「回収」で判断しない
 
 このプロジェクトの目的は [requirements.md](requirements.md) のとおり:
 
@@ -182,7 +213,7 @@ iOS標準のスクリーンタイムは、制限時間に達しても **「制�
 
 ### 3. 差別化の余地は「摩擦の設計」にある
 
-機能では勝てない（AppBlock 1,500万ユーザー、ScreenZen 無料）。
+機能では勝てない（AppBlock 1,500万ユーザー、ScreenZen は無料で4.8★）。
 だが**「知っていても効く仕掛け」を丁寧に作っているアプリは意外と少ない**。
 
 特に **解除の時間差**（「解除は15分後」）は、実装が軽いわりに効果が大きい。
@@ -218,6 +249,14 @@ iOS標準のスクリーンタイムは、制限時間に達しても **「制�
 - [A Developer's Guide to Apple's Screen Time APIs | Medium](https://medium.com/@juliusbrussee/a-developers-guide-to-apple-s-screen-time-apis-familycontrols-managedsettings-deviceactivity-e660147367d7)
 - [Jomo - スクリーンタイム、アプリのブロックアプリ - App Store](https://apps.apple.com/jp/app/jomo-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0-%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF/id1609960918)
 - [アプリ制限 Zentime - App Store](https://apps.apple.com/jp/app/id6748847369)
+
+### 価格モデルの再調査（2026-09-09）
+
+- [AppBlock Pricing — 公式](https://appblock.app/premium/)
+- [Free vs. Premium AppBlock features on iOS — 公式](https://appblock.app/free-vs-premium-features-appblock-ios/)
+- [Is ScreenZen Free? Yes, But Here Is the Catch (2026) — Habit Doom](https://habitdoom.com/blog/screenzen-alternative-iphone)
+- [ScreenZen Review 2026: Is Free Good Enough? — unhookd](https://unhookd.app/blog/screenzen-worth-it-review)
+- [AppBlock Has 15 Million Users — Medium](https://medium.com/@ericofficial/appblock-has-15-million-users-heres-what-its-own-reviews-reveal-about-why-it-doesn-t-work-fdaf6d1e3b9f)
 
 ### 日本市場（追加調査）
 
