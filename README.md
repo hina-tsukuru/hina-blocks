@@ -25,9 +25,12 @@
 
 | パス | 内容 |
 |---|---|
-| `docs/wbs.md` | WBS（**作業と進捗のマスター**） |
+| `docs/wbs.md` | WBS（作業の分解と、判断の記録） |
 | `docs/requirements.md` | MVP要件定義 |
 | `docs/agenda.md` | Phase全体の見取り図 |
+| `docs/market-research.md` | 競合・市場調査 |
+| `docs/growth.md` | このアプリをどう広めるか（グロース方針） |
+| `docs/roi-checklist.md` | 新しいアプリを作る前に通す確認項目 |
 | `docs/workflow.md` | プロジェクトの回し方（図解） |
 | `docs/character.md` | 発信キャラの設定 |
 | `docs/setup.md` | 別マシンで環境を作る手順 |
@@ -77,7 +80,7 @@ UI もそれを前提に設計しています。
 
 ## 進捗
 
-進捗は [docs/wbs.md](docs/wbs.md) が正です。
+進捗の正は Jira（非公開）です。公開しているものでは [docs/wbs.md](docs/wbs.md) が計画と判断の記録にあたります。
 日々の記録は X、まとまった振り返りは記事として公開しています。
 
 - X: [@hina_tsukuru](https://x.com/hina_tsukuru)
