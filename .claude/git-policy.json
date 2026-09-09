@@ -1,0 +1,7 @@
+{
+  "ticket":  { "required": true, "system": "jira", "projectKey": "KAN" },
+  "branch":  { "required": true, "pattern": "feature/<TICKET>-<slug>", "base": "main" },
+  "pr":      { "required": true },
+  "commit":  { "style": "conventional", "language": "ja", "ticketSuffix": true },
+  "directCommitToMain": false
+}
