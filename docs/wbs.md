@@ -1,4 +1,4 @@
-# WBS v1.7 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.8 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -20,6 +20,7 @@
 - v1.5: 0.10（市場調査）の結論を iOS 26.4 の仕様変更に合わせて訂正。0.7.2 の完了を反映。並び順を修正（0.10が0.9の前に入っていた）
 - v1.6: 1.14（グロース方針とROIチェックリスト）を追加。**新規アプリは着手前にROIチェックリストを通す**方針をCLAUDE.mdに追加。あわせて0.10（市場調査）の価格モデルに関する結論を訂正（**このカテゴリは収益化できている**）
 - v1.7: 1.15（匿名公開の前提整備: 屋号DeepInception・ドメインdeepinception.co・EU配信除外）を追加
+- v1.8: 1.16（Bundle IDを `co.deepinception.hinablocks` に変更）を追加
 
 ---
 
@@ -112,7 +113,7 @@
   - 実体は既に存在。内容の最終整備が残っている
 - 1.4 [DEV] Xcodeプロジェクト作成・実機ビルド確認（2h）→ KAN-14
   - 1.4.1 プロジェクト作成（SwiftUI / XCTest / Storage=None）
-    - Bundle Identifier: `io.github.hina-tsukuru.HinaBlocks`
+    - Bundle Identifier: `io.github.hina-tsukuru.HinaBlocks`（→ 1.16 で `co.deepinception.hinablocks` に変更）
       - 組織IDは全アプリで使い回す部分。GitHubアカウントを名前空間に使う（ドメイン購入不要・匿名を維持できる）
       - 実名でアプリを作る場合は**別の名前空間**を使う。同じ名前空間に混ぜると匿名運用が崩れる
       - App Store公開後は変更不可のため、名義はプロジェクト作成時に決める
@@ -273,6 +274,13 @@
     - Playwrightのページスナップショット（`~/Library/Logs/paraiso-booking/playwright/*.yml`）に、ブラウザの**自動入力されたパスワードが平文で残る**ことが判明。値が入っていた3ファイルのうち1件を削除（残り2件も削除対象）
       - 原因はChromeではなく「ログイン情報を持つプロファイルに自動化を繋いでいる」構成。自動入力された値はページ上のテキストとして読める
   - 残作業（Jiraで管理）: 開業届 / D-U-N-S申請 / Apple組織変更 / Bundle ID変更（1.16）
+- 1.16 [DEV] Bundle ID を `co.deepinception.hinablocks` に変更（0.3h）→ KAN-28
+  - 屋号 `DeepInception` とドメイン `deepinception.co`（1.15）に合わせた
+  - 旧: `io.github.hina-tsukuru.HinaBlocks` / 新: `co.deepinception.hinablocks`（テストは `.tests` / `.uitests`）
+  - **Bundle IDはApp Store公開後は変更できない**（変えると別アプリ扱いになり、既存ユーザーの更新が途切れる）。
+    X が今も `com.atebits.Tweetie2`、Instagram が `com.burbn.instagram` のまま
+  - 証明書・Family Controlsのentitlementを作る**前**に変えたので、作り直しは発生しない
+  - 以前の要望「`io.github.hina-tsukuru` を今後のアプリにも使える形にしたい」への答え。2本目以降は `co.deepinception.<アプリ名>` にする
 
 ## Phase 2: MVP実装（合計 ~20h）
 
