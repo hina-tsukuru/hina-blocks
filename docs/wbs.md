@@ -1,4 +1,4 @@
-# WBS v1.9 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.10 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -22,6 +22,7 @@
 - v1.7: 1.15（匿名公開の前提整備: 屋号DeepInception・ドメインdeepinception.co・EU配信除外）を追加
 - v1.8: 1.16（Bundle IDを `co.deepinception.hinablocks` に変更）を追加
 - v1.9: 1.1（Apple Developer Program登録）の保留を解除（2026-09-13 支払い済み）
+- v1.10: 1.17（deepinception.co のWebサイト公開）を追加
 
 ---
 
@@ -282,6 +283,21 @@
     X が今も `com.atebits.Tweetie2`、Instagram が `com.burbn.instagram` のまま
   - 証明書・Family Controlsのentitlementを作る**前**に変えたので、作り直しは発生しない
   - 以前の要望「`io.github.hina-tsukuru` を今後のアプリにも使える形にしたい」への答え。2本目以降は `co.deepinception.<アプリ名>` にする
+- 1.17 [DEV] deepinception.co のWebサイト公開（3h）→ KAN-29
+  - Apple の組織登録（1.15）の条件として、**組織ドメインの公開Webサイト**が必要と公式ヘルプで確認
+    - "websites that contain minimal content or display a message from a domain registrar won't be accepted"
+    - 同じく**組織ドメインのメールアドレス**も必要（Gmail不可）→ `contact@deepinception.co` を Cloudflare Email Routing で作成済み（受信専用・Gmailへ転送、転送テスト済み）
+  - 方針:
+    - 置き場所は **GitHub Pages**（`gh` が既に使える。新しい外部サービス連携が不要。無料）
+    - hina-blocks とは**別リポジトリ**（DeepInception の看板サイト。今後のアプリも載せる）
+    - 日本語 + 英語
+    - **本名・住所は載せない**。運営者表記は DeepInception、連絡先は `contact@deepinception.co`
+    - 丸の内ヒナの名前はひとまずサイトに出さない
+  - 内容: トップ（紹介）/ アプリ（HinaBlocks・開発中）/ プライバシーポリシー / 連絡先
+    - プライバシーポリシーは App Store 公開時にもどのみち必要なので、ここで先に作る
+  - サブタスク: ページ作成 → GitHub Pages 有効化・カスタムドメイン設定 → Cloudflare DNS に Pages 用レコード追加 → HTTPS 確認
+    - DNS は**リポジトリ側でドメインを設定してから**向ける（先に向けると、他人のPagesにドメインを取られる可能性があるため）
+    - Email Routing の MX/TXT は消さない
 
 ## Phase 2: MVP実装（合計 ~20h）
 
