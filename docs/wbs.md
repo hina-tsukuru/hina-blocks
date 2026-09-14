@@ -1,4 +1,4 @@
-# WBS v1.11 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.12 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -24,6 +24,7 @@
 - v1.9: 1.1（Apple Developer Program登録）の保留を解除（2026-09-13 支払い済み）
 - v1.10: 1.17（deepinception.co のWebサイト公開）を追加
 - v1.11: 1.3（CLAUDE.md の整備内容）を追記
+- v1.12: 1.5（SwiftLint導入）の内容を追記
 
 ---
 
@@ -171,6 +172,16 @@
     - 再発防止: **grepは作業ファイルではなく `git diff --cached`（ステージ内容）に対して行う**。
       コミットされるのはステージされた内容であって、手元のファイルではない
 - 1.5 [DEV] SwiftLint導入（1h）→ KAN-15
+  - 2026-09-15: Homebrew で SwiftLint 0.65.1 を導入。設定は `.swiftlint.yml`、実行は `scripts/lint.sh`
+    - 既定ルールに加え、クラッシュの原因になりやすい書き方（強制アンラップ `!` など）を警告にした
+    - 行の長さは 140 文字で警告
+  - 初回の指摘は2件（どちらも Xcode のテンプレートのコード）→ 修正して `--strict` で0件
+    - `final class` の中の `override class var` → `override static var`
+    - 182文字のコメント行を折り返し
+  - **Xcode のビルド時に自動で走らせる設定（Run Script）は入れていない**
+    - 新しい Xcode のプロジェクトは `ENABLE_USER_SCRIPT_SANDBOXING = YES` で、ビルド中のスクリプトからソースを読めず SwiftLint が失敗するため
+    - 代わりに Phase 3 の CI（GitHub Actions）で `scripts/lint.sh --strict` を実行する
+  - 確認: `scripts/lint.sh --strict` 終了コード0、テストターゲット込みのビルド（build-for-testing）成功
 - 1.6 [DEV] 2台目Macのセットアップ・同期確認（1.5h）→ KAN-16
   - 手順は `docs/setup.md` に整備済み。0.7.2（2台目のMCP設定）もここに含む
 - 1.7 [CONTENT] 週次発信の初回実施（環境構築ネタでX投稿3-5本）（1h）→ KAN-17

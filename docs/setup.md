@@ -160,6 +160,15 @@ grep -rn "Created by" HinaBlocks --include='*.swift' | grep -v "hina-tsukuru"
 
 ---
 
+### SwiftLint（WBS 1.5）
+
+```bash
+brew install swiftlint
+scripts/lint.sh
+```
+
+指摘が0件なら何も表示されない。CI と同じ厳しさで見るときは `scripts/lint.sh --strict`。
+
 ## 7. コミット前の必須チェック
 
 公開リポジトリのため、**実名・個人サイト・メールアドレスの混入**を毎回確認する。
