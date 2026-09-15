@@ -1,4 +1,4 @@
-# WBS v1.12 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.13 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -25,6 +25,7 @@
 - v1.10: 1.17（deepinception.co のWebサイト公開）を追加
 - v1.11: 1.3（CLAUDE.md の整備内容）を追記
 - v1.12: 1.5（SwiftLint導入）の内容を追記
+- v1.13: 1.18（deepinception.co のなりすまし対策）を追加
 
 ---
 
@@ -318,6 +319,19 @@
   - サブタスク: ページ作成 → GitHub Pages 有効化・カスタムドメイン設定 → Cloudflare DNS に Pages 用レコード追加 → HTTPS 確認
     - DNS は**リポジトリ側でドメインを設定してから**向ける（先に向けると、他人のPagesにドメインを取られる可能性があるため）
     - Email Routing の MX/TXT は消さない
+- 1.18 [DEV] deepinception.co のなりすまし対策（GitHubドメイン検証・DMARC）（0.5h）→ KAN-30
+  - 1.17（サイト公開）の後片付け
+  - **DMARC**: Cloudflare DNS に `_dmarc` の TXT（`v=DMARC1; p=reject; sp=reject; adkim=r; aspf=r`）を追加
+    - このドメインからはメールを**送っていない**（Email Routing の受信・転送だけ）ので、なりすましメールを「拒否」する一番強い設定にした。受信・転送には影響しない
+    - レポート送り先（rua）は付けていない（毎日の集計レポートが Gmail に届くため）
+    - 将来 `contact@` から送信する場合は、SPF/DKIM を整えるまで一時的に `p=none` に下げる
+  - **GitHub Pages のドメイン検証**: hina-tsukuru アカウントで `deepinception.co` を Verified に
+    - 目的: 他人の GitHub リポジトリが `deepinception.co` やそのサブドメインを Pages に使う「ドメイン乗っ取り」を防ぐ
+    - GitHub が指定する TXT（`_github-pages-challenge-hina-tsukuru`）を Cloudflare に登録して Verify
+  - 詰まった点:
+    - 検証済みドメインを登録する API がなく（`gh api user/pages/domains` が 404）、ブラウザで操作する必要があった
+    - 自動化用 Chrome が GitHub にログインしておらず、夜間は進められなかった（ログインはユーザーが行うルール）
+    - hina-tsukuru の登録メールアドレスがすぐに分からなかった。GitHub はユーザー名でもサインインできる
 
 ## Phase 2: MVP実装（合計 ~20h）
 
