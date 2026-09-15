@@ -1,4 +1,4 @@
-# WBS v1.10 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.11 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -23,6 +23,7 @@
 - v1.8: 1.16（Bundle IDを `co.deepinception.hinablocks` に変更）を追加
 - v1.9: 1.1（Apple Developer Program登録）の保留を解除（2026-09-13 支払い済み）
 - v1.10: 1.17（deepinception.co のWebサイト公開）を追加
+- v1.11: 1.3（CLAUDE.md の整備内容）を追記
 
 ---
 
@@ -113,6 +114,14 @@
   - コミット名義: `hina-tsukuru` + GitHub非公開メール
 - 1.3 [DEV] CLAUDE.md作成（1h）→ KAN-13
   - 実体は既に存在。内容の最終整備が残っている
+  - 2026-09-15 整備:
+    - 「公開名義と匿名運用」の節を追加（屋号・ドメイン・連絡先・サイト・Bundle ID を固定値として1か所にまとめた。1.15〜1.17 の決定の要約）
+    - 実態とずれていた記述を修正
+      - 「Automatically manage signing は使わない」→ fastlane match（Phase 3）までは自動署名を使う
+      - 「Apple Developer Program加入済み前提」→ Family Controls に有料加入が必要という事実と、状況の見る場所（KAN-19）
+      - 「AI生成キャラであることを明記して運用」→ `character.md` の決定（2026-07-21 に明記しない方針へ変更）と矛盾していたので、`character.md` を正とする書き方に変更
+    - ブラウザ操作の線引きを追加（ログイン・決済・本人確認・CAPTCHA はユーザー／Playwright のスナップショットに個人情報が残る／裏タブで描画が止まる／タブの上書き）
+    - 詰まった点: **同じ決定が CLAUDE.md と character.md の2か所にあり、片方だけ古いまま**だった。このリポジトリで繰り返し起きている「2か所に書くと片方が腐る」パターン
 - 1.4 [DEV] Xcodeプロジェクト作成・実機ビルド確認（2h）→ KAN-14
   - 1.4.1 プロジェクト作成（SwiftUI / XCTest / Storage=None）
     - Bundle Identifier: `io.github.hina-tsukuru.HinaBlocks`（→ 1.16 で `co.deepinception.hinablocks` に変更）

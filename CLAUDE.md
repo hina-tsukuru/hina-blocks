@@ -26,6 +26,24 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - **「どう広めるか」も着手前に決める**。作った後に考えない
   - 本プロジェクトの結論は `docs/growth.md`
 
+## 公開名義と匿名運用（2026-09-12〜15決定）
+
+このプロジェクトは運営者の本名を出さずに公開する。**本名・住所・電話番号・マイナンバーは、リポジトリ・サイト・記事・PR本文・コミットメッセージのどこにも書かない。**
+
+| 項目 | 固定値 |
+|---|---|
+| 屋号 | `DeepInception`（1語・スペースなし。表記ゆれを作らない） |
+| ドメイン | `deepinception.co`（Cloudflare Registrar。`.jp` は Whois で登録者名を隠せないので使わない） |
+| 連絡先 | `contact@deepinception.co`（Cloudflare Email Routing。受信専用・Gmailへ転送） |
+| サイト | `https://deepinception.co`（別リポジトリ `hina-tsukuru/deepinception.co`、GitHub Pages） |
+| Bundle ID | `co.deepinception.<アプリ名>`。**App Store公開後は変更できない** |
+
+- アプリ名に `Inception` を含めない（ソフトウェアの区分に既存の登録商標がある。WBS 1.15）
+- EU配信はしない（DSAで住所・電話がストアに公開されるため）
+- App Store の販売者名を屋号にするため、開業届 → D-U-N-S → Apple の組織登録の順で進めている（KAN-27）。**販売者名が屋号になるまで App Store に公開しない**
+- 本名・住所が載った書類（開業届の控えなど）は**リポジトリの外**の `~/Documents/DeepInception/` に置く
+- コミット前に `git diff --cached` を実名パターンで検査する（`docs/setup.md` 7章）
+
 ## ドキュメントの書き分け
 
 **ファイル一覧は README.md に置く。ここには重複させず、「何をどこに書くか」のルールだけを持つ。**
@@ -81,11 +99,11 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 
 - **Macが2台**（会社に置いてる個人Mac + 自宅Mac）。どちらからも作業する
   - 作業終了時は必ずcommit & push（未pushの変更をローカルに残さない）
-  - 証明書はfastlane matchで両Mac共有。Xcodeの "Automatically manage signing" は使わない
+  - 証明書は fastlane match で両Mac共有する予定（Phase 3）。それまでは Xcode の自動署名を使う
   - `DerivedData` / `xcuserdata` 等は .gitignore 対象
   - Claude Codeのセッションはマシンローカルで引き継がれない前提。作業の文脈はPR本文とコミットメッセージに残す
 - 実機テストはユーザーのiPhone。Family Controlsはシミュレータで動作しないため、ロジック部分のみXCTestで担保する
-- Apple Developer Program加入済み前提（未登録ならWBS 1.1が先）
+- Family Controls の capability には**有料の Apple Developer Program が必要**（無料の Personal Team では出ない。WBS 1.4 で確認済み）。加入の状況は Jira の KAN-19 を見る
 
 ## Screen Time API実装上の注意
 
@@ -97,7 +115,7 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 
 このプロジェクトはDEV/CONTENT/CHARAの全レーンをClaude Codeで実行する。
 
-- キャラ設定・口調・台本は `docs/character.md` を必ず参照する（丸の内ヒナ名義、AI生成キャラであることを明記して運用）
+- キャラ設定・口調・台本は `docs/character.md` を必ず参照する（丸の内ヒナ名義。AI生成であることの扱いを含め、運用方針は `character.md` が正）
 - 週次発信タイム: 直近1週間のマージ済みPR本文（詰まった点欄）を読み、X投稿案3〜5本と記事の書き溜めを `content/drafts/` に生成する
 - 記事はPhase節目ごとに1本、`content/articles/` にmarkdownで作成 → ユーザーがZennに公開
   - **記事の原本は `content/articles/` の markdown**。公開先（Zenn）は「今の露出先」でしかなく、後でヒナ専用ブログサイトへ乗り換え可能。原本を書き直す必要はない設計にする
@@ -121,3 +139,10 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - 大きめのタスク（3h以上見積もり）は着手前にサブタスク分解を提案する
 - エラー解決時は「原因・対処・再発防止」をPR本文用に3行でまとめる
 - 日本語で応答する
+
+### ブラウザ操作・外部サービスの線引き
+
+- **ログイン、アカウント作成、決済、本人確認書類、マイナンバー、CAPTCHA、同意・送信ボタンはユーザーが行う**。Claude はその直前で止めて、画面の場所を伝える
+- Playwright のテキストスナップショットはログ（`~/Library/Logs/paraiso-booking/playwright/`）にファイルとして残り、**ブラウザが自動入力したパスワードや、画面に出た個人情報も平文で入る**（2026-09-12 に実際に発生）。ログイン画面や個人情報の画面ではテキストスナップショットを取らず、スクリーンショットか要素の属性だけで確認する
+- 自動化側のタブが裏に回ると描画が止まり、クリックがタイムアウトする。反応しないときは、まずタブが前に出ているかを疑う
+- 新しいタブを開くつもりで、ユーザーが使っているタブを上書きしないよう、操作前にタブ一覧を確認する
