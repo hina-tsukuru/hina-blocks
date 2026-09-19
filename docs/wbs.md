@@ -1,4 +1,4 @@
-# WBS v1.13 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.14 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -26,6 +26,7 @@
 - v1.11: 1.3（CLAUDE.md の整備内容）を追記
 - v1.12: 1.5（SwiftLint導入）の内容を追記
 - v1.13: 1.18（deepinception.co のなりすまし対策）を追加
+- v1.14: 1.16（Bundle ID変更）に有料チームでの署名検証の結果を追記。1.19（Xcode更新: 実機実行のブロッカー解消）を追加
 
 ---
 
@@ -304,6 +305,16 @@
     X が今も `com.atebits.Tweetie2`、Instagram が `com.burbn.instagram` のまま
   - 証明書・Family Controlsのentitlementを作る**前**に変えたので、作り直しは発生しない
   - 以前の要望「`io.github.hina-tsukuru` を今後のアプリにも使える形にしたい」への答え。2本目以降は `co.deepinception.<アプリ名>` にする
+  - 有料プログラム承認後の検証（2026-09-19）:
+    - **Team ID は変わらなかった**。Apple は無料 Personal Team の Team ID を有料加入後もそのまま引き継ぐため、`DEVELOPMENT_TEAM = 7GV9WUC8NP` は書き換え不要だった
+    - 有料チームでの署名を実証。`generic/platform=iOS` の署名付きビルドが成功し、`co.deepinception.hinablocks` のプロファイルが発行された
+    - **Family Controls (Development) が capability 一覧に出た** → Phase 2 のゲート条件は満たした
+  - 詰まった点:
+    - **古いプロファイルを使い回して「成功」に見えた**。最初の署名付きビルドは通ったが、使われたのは加入前に作られた**期限7日**＝無料 Personal Team のプロファイルだった
+      - 判定方法: **無料は有効期限7日、有料は1年**。キャッシュ（`~/Library/Developer/Xcode/UserData/Provisioning Profiles/`）を退避して再ビルドし、1年のプロファイルが出ることを確認した
+      - 再発防止: 署名まわりを変えたら、**ビルドが通ったか**ではなく**発行されたプロファイルの中身**を見る（CLAUDE.md「環境の前提」に追記）
+    - **同じ Apple ID に勤務先の Developer チームが同居している**。ポータルは既定で勤務先チームを選んだ状態で開いた。個人チームを明示的に選ばないと、証明書やApp IDを勤務先側に作ってしまう（CLAUDE.md「環境の前提」に追記）
+    - Xcode のGUIキャッシュ（`defaults read com.apple.dt.Xcode`）は有料化後も `isFreeProvisioningTeam = 1` のまま。ビルドの実体には影響しない
 - 1.17 [DEV] deepinception.co のWebサイト公開（3h）→ KAN-29
   - Apple の組織登録（1.15）の条件として、**組織ドメインの公開Webサイト**が必要と公式ヘルプで確認
     - "websites that contain minimal content or display a message from a domain registrar won't be accepted"
@@ -332,6 +343,13 @@
     - 検証済みドメインを登録する API がなく（`gh api user/pages/domains` が 404）、ブラウザで操作する必要があった
     - 自動化用 Chrome が GitHub にログインしておらず、夜間は進められなかった（ログインはユーザーが行うルール）
     - hina-tsukuru の登録メールアドレスがすぐに分からなかった。GitHub はユーザー名でもサインインできる
+- 1.19 [DEV] Xcode を更新して実機実行のブロッカーを解消（0.5h）→ KAN-31
+  - 症状: 実機ビルドが `The developer disk image could not be mounted on this device.` で失敗する
+  - 原因: **端末の iOS が Xcode より新しい**。iPhone 16 Pro が iOS 26.7、Xcode 26.6 が持つ DeviceSupport は 26.5.2 まで。26.7 用の Developer Disk Image が存在しないためマウントできない
+    - デベロッパモードは `enabled`、ペアリング・ロック解除も問題なしと確認済み（設定の問題ではない）
+  - 対処: iOS 26.7 に対応する Xcode へ更新する
+  - 影響範囲: 実機での**実行・インストール**のみ。署名付きビルド自体は通っているので 1.16 の他の条件には影響しない
+  - これが解けるまで 2.6（実機での結合動作確認）と、Family Controls の実機検証ができない
 
 ## Phase 2: MVP実装（合計 ~20h）
 

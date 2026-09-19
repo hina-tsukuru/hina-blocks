@@ -100,6 +100,8 @@ Apple Screen Time API（FamilyControls / ManagedSettings / DeviceActivity）を�
 - **Macが2台**（会社に置いてる個人Mac + 自宅Mac）。どちらからも作業する
   - 作業終了時は必ずcommit & push（未pushの変更をローカルに残さない）
   - 証明書は fastlane match で両Mac共有する予定（Phase 3）。それまでは Xcode の自動署名を使う
+  - **同じ Apple ID に勤務先の Developer チームが同居している**。ポータルは既定で勤務先チームを選ぶことがある。証明書・App ID・プロファイルを触る前に、**個人チーム（Team ID `7GV9WUC8NP`）が選択されているかを必ず確認する**
+  - 有料チームで署名できているかは「ビルドが通ったか」では判定できない。**発行されたプロビジョニングプロファイルの有効期限**を見る（無料 Personal Team は7日、有料は1年）
   - `DerivedData` / `xcuserdata` 等は .gitignore 対象
   - Claude Codeのセッションはマシンローカルで引き継がれない前提。作業の文脈はPR本文とコミットメッセージに残す
 - 実機テストはユーザーのiPhone。Family Controlsはシミュレータで動作しないため、ロジック部分のみXCTestで担保する
