@@ -1,4 +1,4 @@
-# WBS v1.15 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.16 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -28,6 +28,7 @@
 - v1.13: 1.18（deepinception.co のなりすまし対策）を追加
 - v1.14: 1.16（Bundle ID変更）に有料チームでの署名検証の結果を追記。1.19（Xcode更新: 実機実行のブロッカー解消）を追加
 - v1.15: 1.19 の解消を記録。あわせて1.19の「原因」に挙げていた根拠（iOS DeviceSupport フォルダの中身）が誤りだったので訂正
+- v1.16: Phase 2 を起票しチケット番号を反映。2.1（許可リクエスト）の実装内容と詰まった点を追記
 
 ---
 
@@ -359,14 +360,22 @@
 
 ## Phase 2: MVP実装（合計 ~20h）
 
-> Phase 2以降はチケット未起票。着手するPhaseに入った時点で起票する（未来のチケットを大量に作らない）。
+> Phase 2 は起票済み（2026-09-19）。Phase 3以降は未起票で、着手するPhaseに入った時点で起票する（未来のチケットを大量に作らない）。
 
-- 2.1 [DEV] FamilyControls: 許可リクエスト実装（3h）
-- 2.2 [DEV] FamilyActivityPicker: ブロック対象選択UI（3h）
-- 2.3 [DEV] ManagedSettings: シールド適用/解除（4h）
-- 2.4 [DEV] DeviceActivity: スケジュール機能（5h）※MVPスコープ外。時間帯指定を将来やる時に着手
-- 2.5 [DEV] メイン画面UI（SwiftUI）（3h）
-- 2.6 [DEV] 実機での結合動作確認・録画（2h）
+- 2.1 [DEV] FamilyControls: 許可リクエスト実装（3h）→ KAN-32
+  - 追加したもの: `HinaBlocks.entitlements`（`com.apple.developer.family-controls`）、`ScreenTimeAuthorizationState`（状態→表示）、`ScreenTimeAuthorizationModel`（許可要求）、ContentView の作り替え
+  - **状態を自前の型に移し替えている**。FamilyControls の `AuthorizationStatus` を直接画面に持ち込まず `ScreenTimeAuthorizationState` を挟むことで、「状態が決まったあと画面が何を出すか」をユニットテストで担保できる（テスト6件）
+  - エンタイトルメントは**同期フォルダの外**（`SRCROOT` 直下）に置いた。`PBXFileSystemSynchronizedRootGroup` 配下に置くとバンドルのリソースとして扱われる可能性があるため
+  - 署名後のアプリで `com.apple.developer.family-controls => true` が焼き込まれていることを `codesign -d --entitlements` で確認した
+  - 詰まった点:
+    - `SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES` が有効なため、`localizedDescription` を使うだけで `import Foundation` が必須だった（暗黙の再エクスポートに頼れない）
+    - **Xcode 27 に更新したらシミュレータのランタイムが無くなっていた**。テストは実機で実行した。Family Controls はどのみち実機でしか動かないので実害はない
+    - 実機でのUIテストは `Timed out while enabling automation mode.` で失敗する。iPhone 側で「UIオートメーション」を有効にする必要がある → 2.6 までに解消する
+- 2.2 [DEV] FamilyActivityPicker: ブロック対象選択UI（3h）→ KAN-33
+- 2.3 [DEV] ManagedSettings: シールド適用/解除（4h）→ KAN-34
+- 2.4 [DEV] DeviceActivity: スケジュール機能（5h）※MVPスコープ外のため**未起票**。時間帯指定を将来やる時に着手
+- 2.5 [DEV] メイン画面UI（SwiftUI）（3h）→ KAN-35
+- 2.6 [DEV] 実機での結合動作確認・録画（2h）→ KAN-36
 - 2.7 [CONTENT] 記事第3回「Screen Time API実装編」（2h）
 - 2.8 [CONTENT] 週次発信 x 実装期間分（各1h）
 
