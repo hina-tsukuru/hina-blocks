@@ -11,6 +11,7 @@ struct ContentView: View {
 
     @State private var authorization = ScreenTimeAuthorizationModel()
     @State private var targets = BlockTargetStore()
+    @State private var shield = ShieldController()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -36,12 +37,22 @@ struct ContentView: View {
             if authorization.state.isReady {
                 Divider()
                 BlockTargetSection(store: targets)
+                Divider()
+                ShieldSection(controller: shield, targets: targets)
             }
         }
         .padding(32)
         .onChange(of: scenePhase) { _, phase in
             // 設定アプリで許可を変えられても通知は来ないので、戻ってきたら読み直す。
-            if phase == .active { authorization.refresh() }
+            guard phase == .active else { return }
+            authorization.refresh()
+            shield.refresh()
+        }
+        .onChange(of: targets.selection) { _, newSelection in
+            // ブロック中に対象を選び直したら、掛かっているブロックも追従させる。
+            // 追従しないと、画面の選択内容と実際に塞がれているものが食い違う。
+            guard shield.isOn else { return }
+            shield.turnOn(with: newSelection)
         }
     }
 
