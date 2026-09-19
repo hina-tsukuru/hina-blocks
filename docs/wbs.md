@@ -1,4 +1,4 @@
-# WBS v1.14 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.15 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -27,6 +27,7 @@
 - v1.12: 1.5（SwiftLint導入）の内容を追記
 - v1.13: 1.18（deepinception.co のなりすまし対策）を追加
 - v1.14: 1.16（Bundle ID変更）に有料チームでの署名検証の結果を追記。1.19（Xcode更新: 実機実行のブロッカー解消）を追加
+- v1.15: 1.19 の解消を記録。あわせて1.19の「原因」に挙げていた根拠（iOS DeviceSupport フォルダの中身）が誤りだったので訂正
 
 ---
 
@@ -345,11 +346,16 @@
     - hina-tsukuru の登録メールアドレスがすぐに分からなかった。GitHub はユーザー名でもサインインできる
 - 1.19 [DEV] Xcode を更新して実機実行のブロッカーを解消（0.5h）→ KAN-31
   - 症状: 実機ビルドが `The developer disk image could not be mounted on this device.` で失敗する
-  - 原因: **端末の iOS が Xcode より新しい**。iPhone 16 Pro が iOS 26.7、Xcode 26.6 が持つ DeviceSupport は 26.5.2 まで。26.7 用の Developer Disk Image が存在しないためマウントできない
+  - 原因: **端末の iOS が Xcode より新しい**。iPhone 16 Pro が iOS 26.7 なのに対し、Xcode 26.6 には 26.7 用の Developer Disk Image（デバッグ機能を端末に一時的に載せる部品）が入っていなかった
     - デベロッパモードは `enabled`、ペアリング・ロック解除も問題なしと確認済み（設定の問題ではない）
-  - 対処: iOS 26.7 に対応する Xcode へ更新する
-  - 影響範囲: 実機での**実行・インストール**のみ。署名付きビルド自体は通っているので 1.16 の他の条件には影響しない
-  - これが解けるまで 2.6（実機での結合動作確認）と、Family Controls の実機検証ができない
+  - 対処: Xcode 26.6 → **27.0**（Build 27A266a）へ更新
+  - 結果: 実機ビルドが BUILD SUCCEEDED。`devicectl device install app` での実機インストールも成功（`bundleID: co.deepinception.hinablocks`）
+  - 影響範囲: 実機での**実行・インストール**のみ。署名付きビルド自体は通っていたので 1.16 の他の条件には影響しなかった
+  - **訂正（判断の記録）**: 調査時、原因の根拠として「`~/Library/Developer/Xcode/iOS DeviceSupport` に `26.5.2` しか無い」ことを挙げたが、**これは誤った根拠だった**
+    - このフォルダの実体は `Symbols` だけで、**クラッシュログのアドレスを関数名に翻訳するためのシンボルキャッシュ**（当時 5.7GB）。デバッグ機能を端末に載せる Developer Disk Image とは別物
+    - 実際 Xcode 27 では、旧来 DDI が置かれていた `Platforms/iPhoneOS.platform/DeviceSupport` 自体が存在しない
+    - 結論（Xcode が端末のiOSより古いと実機で動かせない）と対処は正しく、更新で解決した。誤っていたのは**根拠の選び方**
+    - 再発防止: 「DeviceSupport に端末のiOS版が無い」を判断材料にしない。**エラーメッセージが `developer disk image` と言っているか**で見る
 
 ## Phase 2: MVP実装（合計 ~20h）
 
