@@ -1,4 +1,4 @@
-# WBS v1.16 - Freedom系アプリ開発 & 発信プロジェクト
+# WBS v1.17 - Freedom系アプリ開発 & 発信プロジェクト
 
 **運用憲法: すべての作業はこのWBSの項目に紐づく。WBSにない作業は、先にWBSに追加してから着手する。**
 
@@ -29,6 +29,7 @@
 - v1.14: 1.16（Bundle ID変更）に有料チームでの署名検証の結果を追記。1.19（Xcode更新: 実機実行のブロッカー解消）を追加
 - v1.15: 1.19 の解消を記録。あわせて1.19の「原因」に挙げていた根拠（iOS DeviceSupport フォルダの中身）が誤りだったので訂正
 - v1.16: Phase 2 を起票しチケット番号を反映。2.1（許可リクエスト）の実装内容と詰まった点を追記
+- v1.17: 2.2（ブロック対象の選択UI）の実装内容と詰まった点を追記
 
 ---
 
@@ -372,6 +373,13 @@
     - **Xcode 27 に更新したらシミュレータのランタイムが無くなっていた**。テストは実機で実行した。Family Controls はどのみち実機でしか動かないので実害はない
     - 実機でのUIテストは `Timed out while enabling automation mode.` で失敗する。iPhone 側で「UIオートメーション」を有効にする必要がある → 2.6 までに解消する
 - 2.2 [DEV] FamilyActivityPicker: ブロック対象選択UI（3h）→ KAN-33
+  - 追加したもの: `BlockTargetSummary`（件数→表示）、`BlockTargetStore`（選択の保持と保存）、`BlockTargetSection`（ピッカーを開くUI）
+  - **選んだアプリの名前はアプリ側に渡らない**（不透明トークン設計）ので、画面に出せるのは件数だけ。UIにもその旨を明記した
+  - 保存は `FamilyActivitySelection` を `Codable` で UserDefaults へ。保存先は protocol にしてテストから差し替えられるようにした
+  - `selection` の `didSet` で自動保存する。同じ値が入り直したときは書き込まない
+  - 詰まった点:
+    - **デフォルト引数は隔離の外で評価される**。`init(storage: BlockTargetStorage = UserDefaultsBlockTargetStorage())` と書くと、`SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` 下では「MainActor隔離の初期化子を非隔離の文脈から呼んでいる」という警告になる。既定値は**初期化子の本体**で組み立てる（引数を `nil` 許容にして `?? 既定値`）
+    - 実際にアプリを選んだ状態はテストで作れない（トークンは iOS のピッカーしか発行しない）。そのためテストは「保存が走るか」「読み戻せるか」「壊れた値で落ちないか」に絞った
 - 2.3 [DEV] ManagedSettings: シールド適用/解除（4h）→ KAN-34
 - 2.4 [DEV] DeviceActivity: スケジュール機能（5h）※MVPスコープ外のため**未起票**。時間帯指定を将来やる時に着手
 - 2.5 [DEV] メイン画面UI（SwiftUI）（3h）→ KAN-35
