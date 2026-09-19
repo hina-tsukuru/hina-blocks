@@ -8,14 +8,61 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @State private var authorization = ScreenTimeAuthorizationModel()
+    @Environment(\.scenePhase) private var scenePhase
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
+        VStack(spacing: 24) {
+            Image(systemName: authorization.state.isReady ? "checkmark.shield" : "shield")
                 .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+                .font(.system(size: 48))
+                .foregroundStyle(authorization.state.isReady ? .green : .secondary)
+
+            VStack(spacing: 8) {
+                Text(authorization.state.title)
+                    .font(.headline)
+                Text(authorization.state.message)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+
+            if let failureMessage = authorization.failureMessage {
+                Text(failureMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+            }
+
+            if authorization.state.canRequestAuthorization {
+                Button {
+                    Task { await authorization.requestAuthorization() }
+                } label: {
+                    Text("スクリーンタイムを許可する")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(authorization.isRequesting)
+            }
+
+            if authorization.state.needsSettingsApp {
+                Button("設定アプリを開く") {
+                    openSettings()
+                }
+                .buttonStyle(.bordered)
+            }
         }
-        .padding()
+        .padding(32)
+        .onChange(of: scenePhase) { _, phase in
+            // 設定アプリで許可を変えられても通知は来ないので、戻ってきたら読み直す。
+            if phase == .active { authorization.refresh() }
+        }
+    }
+
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
     }
 }
 
