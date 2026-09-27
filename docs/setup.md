@@ -8,15 +8,15 @@
 ## 1. リポジトリを取得
 
 ```bash
-mkdir -p ~/AI && cd ~/AI
+mkdir -p ~/AIProjects/repos && cd ~/AIProjects/repos
 git clone https://github.com/hina-tsukuru/hina-blocks.git
 cd hina-blocks
 ```
 
 これで `docs/` `content/` `CLAUDE.md` が揃う。**作業の文脈は全部ここにある**（WBS・要件・キャラ設定・記事）。
 
-> 置き場所は `~/AI/hina-blocks` に統一する。
-> 以前は `~/dev` を使っていたが移動したため、**手順書の1行目で止まる状態になっていた**。
+> 置き場所は `~/AIProjects/repos/hina-blocks` に統一する（2026-09-27）。
+> `~/dev` → `~/AI` → `~/AIProjects/repos` と2回移動しており、そのたびに手順書が取り残された。
 > `mkdir -p` を付けてあるので、フォルダが無いマシンでもそのまま実行できる。
 
 ---
@@ -87,6 +87,10 @@ claude mcp list
 |---|---|
 | プロジェクトから `No MCP servers configured` | `-s user` を付け忘れた。カレントディレクトリ限定で登録されている。remove して `-s user` 付きで再登録 |
 | `Needs authentication` | `/mcp` → Authenticate を実行していない |
+| 認証画面が **Access denied**（Jira & Confluence site which you don't have ... access） | ブラウザで**別の Atlassian アカウント**にログインしている。先に `https://hinac.atlassian.net` が開けるアカウントでログインし直してから Authenticate する |
+| `claude` 起動時に Claude のログインを求められる | ターミナルの `claude` はデスクトップアプリとログインが別。**開いたブラウザで入っているアカウントを確認**してから進める（Apple でサインインすると別アカウントが黙って作られる） |
+| `Accessing workspace: /Users/<名前>` の信頼確認 | ホームで起動している。**No, exit** を選び、リポジトリのフォルダで `claude` を起動し直す |
+| デスクトップアプリで `✔ Connected` なのに atlassian のツールが無い | セッションを開き直す（起動時にしか読み込まれない） |
 | ツールが使えない（`✔ Connected` なのに） | Claude Code の**再起動**が必要。起動時にMCPを読み込むため |
 | Confluenceだけ 403 `The app is not installed` | Confluenceのスコープが認証に入っていない。`/mcp` で再認証 |
 
