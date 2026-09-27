@@ -8,15 +8,15 @@
 ## 1. リポジトリを取得
 
 ```bash
-mkdir -p ~/AI && cd ~/AI
+mkdir -p ~/AIProjects/repos && cd ~/AIProjects/repos
 git clone https://github.com/hina-tsukuru/hina-blocks.git
 cd hina-blocks
 ```
 
 これで `docs/` `content/` `CLAUDE.md` が揃う。**作業の文脈は全部ここにある**（WBS・要件・キャラ設定・記事）。
 
-> 置き場所は `~/AI/hina-blocks` に統一する。
-> 以前は `~/dev` を使っていたが移動したため、**手順書の1行目で止まる状態になっていた**。
+> 置き場所は `~/AIProjects/repos/hina-blocks` に統一する（2026-09-27）。
+> `~/dev` → `~/AI` → `~/AIProjects/repos` と2回移動しており、そのたびに手順書が取り残された。
 > `mkdir -p` を付けてあるので、フォルダが無いマシンでもそのまま実行できる。
 
 ---
@@ -87,6 +87,10 @@ claude mcp list
 |---|---|
 | プロジェクトから `No MCP servers configured` | `-s user` を付け忘れた。カレントディレクトリ限定で登録されている。remove して `-s user` 付きで再登録 |
 | `Needs authentication` | `/mcp` → Authenticate を実行していない |
+| 認証画面が **Access denied**（Jira & Confluence site which you don't have ... access） | ブラウザで**別の Atlassian アカウント**にログインしている。先に `https://hinac.atlassian.net` が開けるアカウントでログインし直してから Authenticate する |
+| `claude` 起動時に Claude のログインを求められる | ターミナルの `claude` はデスクトップアプリとログインが別。**開いたブラウザで入っているアカウントを確認**してから進める（Apple でサインインすると別アカウントが黙って作られる） |
+| `Accessing workspace: /Users/<名前>` の信頼確認 | ホームで起動している。**No, exit** を選び、リポジトリのフォルダで `claude` を起動し直す |
+| デスクトップアプリで `✔ Connected` なのに atlassian のツールが無い | セッションを開き直す（起動時にしか読み込まれない） |
 | ツールが使えない（`✔ Connected` なのに） | Claude Code の**再起動**が必要。起動時にMCPを読み込むため |
 | Confluenceだけ 403 `The app is not installed` | Confluenceのスコープが認証に入っていない。`/mcp` で再認証 |
 
@@ -118,11 +122,30 @@ xcode-select -p
 
 `/Applications/Xcode.app/Contents/Developer` のようなパスが出ればOK。
 
+> ⚠️ **Xcode は iPhone の iOS より新しいものが要る。** 端末の iOS に対応する
+> Developer Disk Image を Xcode が持っていないと、実機で動かせない。
+> 症状は `The developer disk image could not be mounted on this device.`。
+> このときは Xcode を更新する。
+>
+> **`~/Library/Developer/Xcode/iOS DeviceSupport` の中身で判断しないこと。**
+> あそこはクラッシュログを読むためのシンボルキャッシュで、別物。
+> 端末のiOS版が入っていなくても動くし、入っていても動かないことがある
+> （2026-09-19 に実際に誤判断した）。判断材料はエラーメッセージの方。
+
 ### 6.1 Apple ID を登録する
 
-**Xcode → Settings → Accounts** で Apple ID を追加する。**無料のApple IDでよい**（有料のApple Developer Program は WBS 1.1 で保留中）。
+**Xcode → Settings → Apple Accounts**（Xcode 26 以前は「Accounts」）で Apple ID を追加する。
 
-追加すると Team に「(名前) (Personal Team)」が選べるようになる。これがないと実機で動かせない。
+**Apple Developer Program は加入済み**（2026-09-13 支払い、2026-09-16 承認。有効期限 2027-09-16）。
+署名に使うのは **Team ID `7GV9WUC8NP`**。
+
+> ⚠️ **同じ Apple ID に勤務先の Developer チームが同居している。**
+> Apple のポータルは既定で勤務先チームを選んだ状態で開くことがある。
+> 証明書・App ID・プロファイルを触る前に、**個人チームが選ばれているか毎回確認する。**
+> 取り違えると勤務先のチームに証明書を作ってしまう。
+
+有料加入しても **Team ID は無料時代から変わらない**。
+「Personal Team」表記が Xcode のキャッシュに残ることがあるが、ビルドの実体には影響しない。
 
 ### 6.2 ビルド時に出るパスワード要求について
 
@@ -132,12 +155,36 @@ xcode-select -p
 
 **「Always Allow」** を選ぶ（「Allow」だとビルドのたびに聞かれる）。
 
-### 6.3 無料署名の制約
+### 6.3 有料チームで署名できているかの確認
 
-- 署名は**7日で失効**する → 週1でXcodeから実機に入れ直す
-- Family Controls のような制限付きエンタイトルメントは使えない可能性がある
-  （WBS 1.4.2 の時点で判明する）
-- Xcode の "Automatically manage signing" は将来 fastlane match に移行予定（WBS 3.3）
+**「ビルドが通った」は有料化の証明にならない。** 加入前に作られた無料の
+プロファイルがキャッシュに残っていると、それを使い回してビルドが成功してしまう
+（2026-09-19 に実際に起きた）。
+
+判定は**発行されたプロファイルの有効期限**で行う。**無料は7日、有料は1年。**
+
+```bash
+P=$(ls "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"/*.mobileprovision | head -1)
+security cms -D -i "$P" > /tmp/pp.plist
+/usr/libexec/PlistBuddy -c "Print :Name" -c "Print :ExpirationDate" /tmp/pp.plist
+```
+
+7日後の日付が出たら無料のものを掴んでいる。キャッシュを退避して取り直す:
+
+```bash
+mkdir -p /tmp/pp-backup
+mv "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"/*.mobileprovision /tmp/pp-backup/
+xcodebuild -project HinaBlocks/HinaBlocks.xcodeproj -scheme HinaBlocks \
+  -destination 'generic/platform=iOS' -allowProvisioningUpdates build
+```
+
+エンタイトルメントが実際に焼き込まれているかは、署名後のアプリを見る:
+
+```bash
+codesign -d --entitlements - --xml <ビルドされた .app> | plutil -p - | grep family-controls
+```
+
+Xcode の "Automatically manage signing" は将来 fastlane match に移行予定（WBS 3.3）。
 
 ### 6.4 ⚠️ 新規ファイルに実名が入らないことの確認
 
@@ -160,6 +207,25 @@ grep -rn "Created by" HinaBlocks --include='*.swift' | grep -v "hina-tsukuru"
 
 ---
 
+### 6.5 テストの実行
+
+**シミュレータでは Family Controls が動かない。テストは実機で走らせる。**
+
+```bash
+xcodebuild -project HinaBlocks/HinaBlocks.xcodeproj -scheme HinaBlocks \
+  -destination 'id=<端末のUDID>' -allowProvisioningUpdates test
+```
+
+UDID は `xcrun devicectl list devices` で確認する。
+
+> ⚠️ **実機テスト中は端末のロックを解除しておくこと。** ロック状態でエラーが変わる:
+> - ロック中: `Lost pending connection to the test runner before launch.`
+> - 解除済みで失敗: `Timed out while enabling automation mode.`
+>   → iPhone の「設定 → デベロッパ」で UI オートメーションを確認する
+
+Xcode を大きく更新すると**シミュレータのランタイムが消えていることがある**。
+実機で走らせるなら困らないので、数GBのダウンロードを慌てて始めなくてよい。
+
 ### SwiftLint（WBS 1.5）
 
 ```bash
@@ -173,7 +239,17 @@ scripts/lint.sh
 
 公開リポジトリのため、**実名・個人サイト・メールアドレスの混入**を毎回確認する。
 
-**初回のみ**: チェックしたい語を1行ずつ書いたファイルをローカルに作る。
+**マシンごとに初回のみ**: チェックしたい語を1行ずつ書いたファイルをローカルに作る。
+`.gitignore` 対象なので **git では運ばれない。2台目でも必ず作り直す。**
+
+実名を手で打つとシェル履歴やログに残るため、macOSアカウント情報から生成する:
+
+```bash
+{ id -F; id -un; } | sed '/^$/d' | sort -u > .private-patterns
+```
+
+住所・電話番号・旧ハンドル・個人サイトのドメインなど、他に隠したい語があれば
+エディタで追記する:
 
 ```bash
 vi .private-patterns
@@ -199,6 +275,12 @@ git diff --cached | grep -niFf .private-patterns
 > `git status` が `AM` のときは「ステージ済み内容 ≠ 現在のファイル」を意味する。
 
 何も出なければコミットしてよい。
+
+> ⚠️ **このファイルが無いまま運用しない。**
+> `grep -f` は対象ファイルが無いとエラーになるだけなので、代わりに
+> 検索語をコマンドへ直接書きたくなる。だがそれをやると**実名がシェル履歴・
+> 端末ログ・セッションの記録に残る**。手順書が避けようとしているのと同じ失敗。
+> 2026-09-27 時点で、実際にこの代用が繰り返されていたことが判明した。
 
 ---
 
