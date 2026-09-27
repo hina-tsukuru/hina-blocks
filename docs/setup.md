@@ -134,7 +134,7 @@ xcode-select -p
 
 ### 6.1 Apple ID を登録する
 
-**Xcode → Settings → Accounts** で Apple ID を追加する。
+**Xcode → Settings → Apple Accounts**（Xcode 26 以前は「Accounts」）で Apple ID を追加する。
 
 **Apple Developer Program は加入済み**（2026-09-13 支払い、2026-09-16 承認。有効期限 2027-09-16）。
 署名に使うのは **Team ID `7GV9WUC8NP`**。
